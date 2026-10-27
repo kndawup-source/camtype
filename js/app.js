@@ -8,15 +8,15 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&
 const num=(v,f=0)=>Number.isFinite(Number(v))?Number(v):f;
 
 function progressMarkup(){
-  return `<div class="progress" aria-label="진행률">${QUESTIONS.map((_,i)=>`<span class="progress-segment ${i<state.step?'done':i===state.step?'current':''}"></span>`).join('')}</div>`;
+  return `<div class="progress" aria-label="Progress">${QUESTIONS.map((_,i)=>`<span class="progress-segment ${i<state.step?'done':i===state.step?'current':''}"></span>`).join('')}</div>`;
 }
 
 function start(){
   state.step=-1; state.answers={}; state.draft=null;
   app.innerHTML=`<section class="screen start-screen">
     <div class="start-head"><div class="brand">CAMTYPE</div></div>
-    <div class="start-content"><h1>나한테 맞는<br>카메라는 뭘까?</h1><p>복잡한 스펙 대신 취향과 사용 방식으로<br>나에게 맞는 카메라 조합을 찾아보세요.</p><div class="start-meta">${QUESTIONS.length} questions · about 1 min</div></div>
-    <div class="start-footer"><button class="primary" id="startBtn">시작하기</button></div>
+    <div class="start-content"><h1>FIND YOUR<br>CAMERA TYPE.</h1><p>복잡한 스펙 대신 취향과 사용 방식으로<br>나에게 맞는 조합을 찾아보세요.</p><div class="start-meta">${QUESTIONS.length} questions · about 1 min</div></div>
+    <div class="start-footer"><button class="primary" id="startBtn">START</button></div>
   </section>`;
   document.querySelector('#startBtn').onclick=()=>{QUESTIONS=getQuestions();CAMERAS=getCameras();TYPES=getTypes();trackStart();state.step=0;prepareDraft();renderQuestion();};
 }
@@ -60,7 +60,7 @@ function renderQuestion(){
     <div class="quiz-top">${progressMarkup()}</div>
     <div class="question-area"><div class="step-label">${String(state.step+1).padStart(2,'0')} / ${String(QUESTIONS.length).padStart(2,'0')}</div><h2 class="question-title">${esc(q.title)}</h2>${q.kicker?`<p class="question-note">${esc(q.kicker)}</p>`:''}</div>
     <div class="choice-area" id="choiceArea"></div>
-    <div class="quiz-bottom"><button class="next-btn" id="nextBtn" ${state.draft?'':'disabled'}>다음</button><button class="prev-btn" id="prevBtn" ${state.step===0?'disabled':''}>이전</button></div>
+    <div class="quiz-bottom"><button class="next-btn" id="nextBtn" ${state.draft?'':'disabled'}>NEXT</button><button class="prev-btn" id="prevBtn" ${state.step===0?'disabled':''}>BACK</button></div>
   </section>`;
   if(q.type==='number_wheel')renderWheel(q);
   else if(q.type==='ratio_slider')renderRatio(q);
@@ -90,7 +90,7 @@ function renderOptions(q){
 function renderMultiChoice(q){
   const area=document.querySelector('#choiceArea'),selectedIds=new Set(state.draft?.selectedIds||[]),max=Math.max(1,num(q.maxSelections,2)),min=Math.max(1,num(q.minSelections,1));
   const paint=()=>{
-    area.innerHTML=`<div class="multi-status">${selectedIds.size} / ${max} 선택</div><div class="options compact-options">${(q.options||[]).map((o,i)=>`<button class="option multi-option ${selectedIds.has(o.id)?'selected':''}" data-i="${i}" aria-pressed="${selectedIds.has(o.id)}"><div class="option-copy"><strong>${esc(o.label)}</strong>${o.desc?`<span>${esc(o.desc)}</span>`:''}</div><div class="multi-count">${selectedIds.has(o.id)?[...selectedIds].indexOf(o.id)+1:''}</div></button>`).join('')}</div>`;
+    area.innerHTML=`<div class="multi-status">PICK ${selectedIds.size} / ${max}</div><div class="options compact-options">${(q.options||[]).map((o,i)=>`<button class="option multi-option ${selectedIds.has(o.id)?'selected':''}" data-i="${i}" aria-pressed="${selectedIds.has(o.id)}"><div class="option-copy"><strong>${esc(o.label)}</strong>${o.desc?`<span>${esc(o.desc)}</span>`:''}</div><div class="multi-count">${selectedIds.has(o.id)?[...selectedIds].indexOf(o.id)+1:''}</div></button>`).join('')}</div>`;
     area.querySelectorAll('.multi-option').forEach(btn=>btn.onclick=()=>{
       const o=q.options[Number(btn.dataset.i)];
       if(selectedIds.has(o.id)) selectedIds.delete(o.id); else {if(selectedIds.size>=max)return;selectedIds.add(o.id);}
@@ -105,17 +105,17 @@ function renderMultiChoice(q){
 
 function renderRatio(q){
   const area=document.querySelector('#choiceArea'),min=num(q.min,0),max=num(q.max,100),step=Math.max(1,num(q.step,10)),value=num(state.draft?.value,q.defaultValue??50);
-  area.innerHTML=`<div class="ratio-wrap"><div class="ratio-value" id="ratioValue"></div><input id="ratioRange" class="ratio-range" type="range" min="${min}" max="${max}" step="${step}" value="${value}"><div class="ratio-labels"><span>${esc(q.leftLabel||'왼쪽')}</span><span>${esc(q.rightLabel||'오른쪽')}</span></div></div>`;
+  area.innerHTML=`<div class="ratio-wrap"><div class="ratio-value" id="ratioValue"></div><input id="ratioRange" class="ratio-range" type="range" min="${min}" max="${max}" step="${step}" value="${value}"><div class="ratio-labels"><span>${esc(q.leftLabel||'LEFT')}</span><span>${esc(q.rightLabel||'RIGHT')}</span></div></div>`;
   const range=document.querySelector('#ratioRange'),label=document.querySelector('#ratioValue');
-  const sync=()=>{const v=num(range.value),pct=Math.round((v-min)/(max-min)*100),left=100-pct,right=pct;state.draft=scaleAnswer(q,v);label.innerHTML=`<strong>${esc(q.leftLabel||'왼쪽')} ${left}</strong><span>${esc(q.rightLabel||'오른쪽')} ${right}</span>`;range.style.setProperty('--fill',`${pct}%`);document.querySelector('#nextBtn').disabled=false;};
+  const sync=()=>{const v=num(range.value),pct=Math.round((v-min)/(max-min)*100),left=100-pct,right=pct;state.draft=scaleAnswer(q,v);label.innerHTML=`<strong>${esc(q.leftLabel||'LEFT')} ${left}</strong><span>${esc(q.rightLabel||'RIGHT')} ${right}</span>`;range.style.setProperty('--fill',`${pct}%`);document.querySelector('#nextBtn').disabled=false;};
   range.addEventListener('input',sync,{passive:true});sync();
 }
 
 function renderTapScale(q){
   const area=document.querySelector('#choiceArea'),steps=Math.max(2,num(q.steps,5)),value=num(state.draft?.value,q.defaultValue??Math.floor(steps/2));
-  area.innerHTML=`<div class="tap-scale-wrap"><div class="tap-scale-labels"><span>${esc(q.leftLabel||'낮음')}</span><span>${esc(q.rightLabel||'높음')}</span></div><div class="tap-scale" style="grid-template-columns:repeat(${steps},1fr)">${Array.from({length:steps},(_,i)=>`<button class="tap-point ${i===value?'selected':''}" data-v="${i}" aria-label="${i+1}단계"><span></span></button>`).join('')}</div><div class="tap-scale-value" id="tapScaleValue"></div></div>`;
+  area.innerHTML=`<div class="tap-scale-wrap"><div class="tap-scale-labels"><span>${esc(q.leftLabel||'LOW')}</span><span>${esc(q.rightLabel||'HIGH')}</span></div><div class="tap-scale" style="grid-template-columns:repeat(${steps},1fr)">${Array.from({length:steps},(_,i)=>`<button class="tap-point ${i===value?'selected':''}" data-v="${i}" aria-label="${i+1}단계"><span></span></button>`).join('')}</div><div class="tap-scale-value" id="tapScaleValue"></div></div>`;
   const valueEl=document.querySelector('#tapScaleValue');
-  const sync=v=>{state.draft=tapScaleAnswer(q,v);area.querySelectorAll('.tap-point').forEach((b,i)=>b.classList.toggle('selected',i===v));const ratio=v/(steps-1);valueEl.textContent=ratio<.25?(q.leftLabel||'낮음'):ratio>.75?(q.rightLabel||'높음'):'중간쯤';document.querySelector('#nextBtn').disabled=false;};
+  const sync=v=>{state.draft=tapScaleAnswer(q,v);area.querySelectorAll('.tap-point').forEach((b,i)=>b.classList.toggle('selected',i===v));const ratio=v/(steps-1);valueEl.textContent=ratio<.25?(q.leftLabel||'LOW'):ratio>.75?(q.rightLabel||'HIGH'):'BALANCED';document.querySelector('#nextBtn').disabled=false;};
   area.querySelectorAll('.tap-point').forEach(b=>b.onclick=()=>sync(num(b.dataset.v)));sync(value);
 }
 
@@ -135,7 +135,7 @@ function goBack(){if(state.step===0)return;state.step--;prepareDraft();renderQue
 
 function productCard(item,label){
   if(!item)return '';
-  return `<div class="recommend-card"><div class="recommend-label">${label}</div><div class="recommend-name">${esc(item.brand)} ${esc(item.body)}</div><div class="recommend-lens">${esc(item.lens)}</div><div class="recommend-meta"><span>추천 기준가 ${Number(item.price).toLocaleString()}만원</span><span>${item.weight?` · 약 ${item.weight}g`:``}</span></div></div>`;
+  return `<div class="recommend-card"><div class="recommend-label">${label}</div><div class="recommend-name">${esc(item.brand)} ${esc(item.body)}</div><div class="recommend-lens">${esc(item.lens)}</div><div class="recommend-meta"><span>EST. PRICE ${Number(item.price).toLocaleString()}만원</span><span>${item.weight?` · 약 ${item.weight}g`:``}</span></div></div>`;
 }
 
 function renderPhoneFirst(){
@@ -145,8 +145,8 @@ function renderPhoneFirst(){
     <div class="result-top"><div class="result-kicker">YOUR CAMTYPE</div></div>
     <div class="result-main"><h1 class="result-title">${esc(type.name)}</h1><p class="result-line">${esc(type.line)}</p></div>
     <div class="phone-card"><div class="phone-word">iPhone</div><p>가볍고, 바로 꺼내 찍을 수 있고,<br>추가 렌즈도 필요 없으니까요.</p></div>
-    <div class="phone-copy"><strong>지금 조건이라면<br>카메라를 굳이 살 필요가 없어요.</strong><span>예산이나 무게 조건을 넓히면 다시 카메라 조합을 찾아볼 수 있어요.</span></div>
-    <div class="result-bottom"><button class="secondary" id="retryBtn">조건 바꿔보기</button></div>
+    <div class="phone-copy"><strong>NO CAMERA NEEDED.</strong><span>지금 조건이라면 iPhone이 더 잘 맞아요. 예산이나 무게 조건을 넓히면 다시 찾아볼 수 있어요.</span></div>
+    <div class="result-bottom"><button class="secondary" id="retryBtn">TRY AGAIN</button></div>
   </div></section>`;
   document.querySelector('#retryBtn').onclick=start;
 }
@@ -160,14 +160,14 @@ function renderResult(){
     <div class="result-top"><div class="result-kicker">YOUR CAMTYPE</div></div>
     <div class="result-main"><h1 class="result-title">${esc(type.name)}</h1><p class="result-line">${esc(type.line)}</p></div>
     <div class="product-slot">${best.image?`<img src="${esc(best.image)}" alt="${esc(best.brand)} ${esc(best.body)}">`:'PRODUCT IMAGE'}</div>
-    <div class="best-block"><div class="best-label">BEST MATCH</div><div class="best-name">${esc(best.brand)} ${esc(best.body)}</div><div class="best-lens">${esc(best.lens)}</div><div class="best-meta"><span>추천 기준가 ${best.price}만원</span><span>${best.weight?` · 약 ${best.weight}g`:``}</span></div><div class="price-note">${esc(best.priceType||'추천 기준가')} · ${esc(best.priceAsOf||best.verifiedAt||'')} 기준</div></div>
-    <div class="result-bottom"><button class="secondary" id="detailBtn">결과 자세히 보기</button></div>
+    <div class="best-block"><div class="best-label">BEST MATCH</div><div class="best-name">${esc(best.brand)} ${esc(best.body)}</div><div class="best-lens">${esc(best.lens)}</div><div class="best-meta"><span>EST. PRICE ${best.price}만원</span><span>${best.weight?` · 약 ${best.weight}g`:``}</span></div><div class="price-note">${esc(best.priceType||'EST. PRICE')} · ${esc(best.priceAsOf||best.verifiedAt||'')} 기준</div></div>
+    <div class="result-bottom"><button class="secondary" id="detailBtn">SEE DETAILS</button></div>
   </div>
-  <section class="detail" id="details"><h3>왜 이 조합인가요?</h3><div class="reason-list">${reasons.map(r=>`<div class="reason"><b>${esc(r.label)}</b><span>${esc(r.text)}</span></div>`).join('')}</div></section>
-  <section class="detail"><h3>다른 선택</h3>${productCard(set.lighter,'LIGHTER')}${productCard(set.value,'BETTER VALUE')}</section>
-  <div class="actions"><button class="retry" id="retryBtn">다시 하기</button><button class="copy" id="copyBtn">결과 복사</button></div></section>`;
+  <section class="detail" id="details"><h3>WHY THIS?</h3><div class="reason-list">${reasons.map(r=>`<div class="reason"><b>${esc(r.label)}</b><span>${esc(r.text)}</span></div>`).join('')}</div></section>
+  <section class="detail"><h3>OTHER PICKS</h3>${productCard(set.lighter,'LIGHTER')}${productCard(set.value,'BETTER VALUE')}</section>
+  <div class="actions"><button class="retry" id="retryBtn">TRY AGAIN</button><button class="copy" id="copyBtn">COPY RESULT</button></div></section>`;
   document.querySelector('#detailBtn').onclick=()=>document.querySelector('#details').scrollIntoView({behavior:'smooth'});
   document.querySelector('#retryBtn').onclick=start;
-  document.querySelector('#copyBtn').onclick=async()=>{const text=`나는 ${type.name}\n추천 조합: ${best.brand} ${best.body} + ${best.lens}`;try{await navigator.clipboard.writeText(text);document.querySelector('#copyBtn').textContent='복사됨';}catch{alert(text)}};
+  document.querySelector('#copyBtn').onclick=async()=>{const text=`MY CAMTYPE: ${type.name}\nBEST MATCH: ${best.brand} ${best.body} + ${best.lens}`;try{await navigator.clipboard.writeText(text);document.querySelector('#copyBtn').textContent='COPIED';}catch{alert(text)}};
 }
 start();
