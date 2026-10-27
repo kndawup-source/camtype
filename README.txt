@@ -1,14 +1,39 @@
-CAMERA TYPE
+CAMTYPE - Camera preference / recommendation prototype
 
-정적 프로토타입입니다.
-- Supabase 미연결
-- 질문/제품 데이터는 /data/*.js
-- 이미지 필드는 null 상태
-- 나중에 Supabase Storage URL로 교체 가능
-- /admin 은 구조 미리보기용
+Current structure
+- Mobile-first static frontend
+- Supabase not connected yet
+- localStorage CMS for admin edits
+- Admin PIN: 529816 (temporary client-side gate only)
+- Images can be added later using image URL fields
+- Numeric questions use a wheel picker
 
-로컬 실행 권장:
-python -m http.server 8080
+Recommendation flow
+1. Budget (hard constraint)
+2. Main shooting subject
+3. Photo / video balance
+4. Portability
+5. Lens style
+6. Control preference
+7. Visual mood
+8. Color preference
+9. Output / editing preference
+10. Final relationship with camera
 
-브라우저:
-http://localhost:8080
+Result
+- CAMTYPE personality result
+- BEST MATCH
+- LIGHTER alternative
+- BETTER VALUE alternative
+
+Admin
+- Questions: order, type, text, options, image URL, score JSON, wheel range
+- Products: body, price, image, trait JSON, visibility
+- Recommendation combos: lens, total price, tags
+- Result types: name, line, scoring keys, visibility
+- Statistics: starts, completions, completion rate, recommendations, type distribution, answer distribution
+
+Supabase migration later
+- Replace localStorage reads/writes with database queries
+- Move images to Supabase Storage
+- Move admin PIN to server-side authentication / RLS
