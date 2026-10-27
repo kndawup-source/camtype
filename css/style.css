@@ -129,3 +129,4 @@ button{color:inherit;-webkit-tap-highlight-color:transparent}
 }
 
 .compact-options{gap:7px}.compact-options .option{min-height:70px}.compact-options .option strong{font-size:16px}.compact-options .option span{font-size:11px}
+.price-note{font-size:10px;color:#b0b0b0;margin-top:6px;line-height:1.35}
