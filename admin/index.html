@@ -48,7 +48,7 @@ function verify(){
 }
 function render(){
   const el=document.querySelector('#questionList');
-  el.innerHTML=QUESTIONS.map((q,i)=>`<div class="row"><strong>${String(i+1).padStart(2,'0')} · ${q.title}</strong><div class="meta">${q.type} · 선택지 ${q.options.length}개</div><div class="status">활성</div>${q.type==='image_choice'?'<div class="placeholder">IMAGE SLOT A / B</div>':''}</div>`).join('');
+  el.innerHTML=QUESTIONS.map((q,i)=>`<div class="row"><strong>${String(i+1).padStart(2,'0')} · ${q.title}</strong><div class="meta">${q.type==='number_wheel'?`number wheel · ${q.min}~${q.max}${q.unit||''} · ${q.step}${q.unit||''} 단위`:`${q.type} · 선택지 ${q.options.length}개`}</div><div class="status">활성</div>${q.type==='image_choice'?'<div class="placeholder">IMAGE SLOT A / B</div>':''}</div>`).join('');
 }
 
 document.querySelector('#unlock').onclick=verify;

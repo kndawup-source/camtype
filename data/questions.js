@@ -59,14 +59,8 @@ export const QUESTIONS = [
     ]
   },
   {
-    id:'q9', type:'choice', title:'예산은 어느 정도 생각해요?', kicker:'바디 + 기본 렌즈까지 포함한 총 예산.',
-    hardConstraint:'budget',
-    options:[
-      {id:'under120',label:'120만원 이하',desc:'가볍게 시작',value:120},
-      {id:'under200',label:'200만원 이하',desc:'선택지가 가장 많은 구간',value:200},
-      {id:'under300',label:'300만원 이하',desc:'성능까지 욕심내기',value:300},
-      {id:'open',label:'예산보다 취향',desc:'잘 맞으면 가격은 나중에',value:999}
-    ]
+    id:'q9', type:'number_wheel', title:'예산은 어느 정도인가요?', kicker:'바디 + 기본 렌즈까지 포함한 총 예산.',
+    hardConstraint:'budget', unit:'만원', min:100, max:400, step:10, defaultValue:200
   },
   {
     id:'q10', type:'choice', title:'마지막. 카메라는 어떤 물건이면 좋겠어요?', kicker:'정답보다 당신이 원하는 관계에 가까운 쪽.',
