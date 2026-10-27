@@ -1,5 +1,9 @@
-import { QUESTIONS } from '../data/questions.js';
+import { getQuestions,getCameras,getTypes,trackStart,trackResult } from './store.js';
 import { buildProfile,getRecommendations,getType,getReasons } from './scoring.js';
+
+let QUESTIONS=getQuestions();
+let CAMERAS=getCameras();
+let TYPES=getTypes();
 
 const app=document.querySelector('#app');
 const state={step:-1,answers:{},draft:null};
@@ -20,7 +24,7 @@ function start(){
       </div>
       <div class="start-footer"><button class="primary" id="startBtn">시작하기</button></div>
     </section>`;
-  document.querySelector('#startBtn').onclick=()=>{state.step=0;prepareDraft();renderQuestion();};
+  document.querySelector('#startBtn').onclick=()=>{QUESTIONS=getQuestions();CAMERAS=getCameras();TYPES=getTypes();trackStart();state.step=0;prepareDraft();renderQuestion();};
 }
 
 function prepareDraft(){
@@ -151,10 +155,11 @@ function goBack(){
 
 function renderResult(){
   const {profile,budget}=buildProfile(state.answers);
-  const recs=getRecommendations(profile,budget);
-  const type=getType(profile);
-  const best=recs[0];
+  const recs=getRecommendations(profile,budget,CAMERAS);
+  const type=getType(profile,TYPES);
+  const best=recs[0] || CAMERAS[0];
   const reasons=getReasons(profile,best);
+  trackResult(type.id,best.id);
   const productVisual=best.image?`<img src="${best.image}" alt="${best.brand} ${best.body}" />`:'PRODUCT IMAGE';
 
   app.innerHTML=`
