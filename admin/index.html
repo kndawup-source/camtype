@@ -1,9 +1,60 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CAMERA TYPE ADMIN</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+<title>CAMTYPE ADMIN</title>
 <style>
-:root{--bg:#f4f1e9;--ink:#171717;--muted:#77736c;--line:#d7d1c6;--card:#fffdf8}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}main{max-width:1100px;margin:auto;padding:28px 20px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.brand{font-weight:900;letter-spacing:.12em;font-size:13px}.back{color:var(--muted);font-size:13px;text-decoration:none}.grid{display:grid;grid-template-columns:220px 1fr;gap:22px}.nav,.panel{background:var(--card);border:1px solid var(--line);border-radius:20px}.nav{padding:12px;height:max-content}.nav button{width:100%;border:0;background:transparent;padding:12px 10px;text-align:left;border-radius:10px;cursor:pointer}.nav button.active{background:#171717;color:#fff}.panel{padding:22px}.title{font-size:30px;font-weight:900;letter-spacing:-.04em;margin:0 0 4px}.sub{color:var(--muted);font-size:13px;margin-bottom:24px}.row{border-top:1px solid var(--line);padding:16px 0}.row:first-of-type{border-top:0}.row strong{display:block}.meta{font-size:12px;color:var(--muted);margin-top:5px}.status{display:inline-block;margin-top:8px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;font-size:11px}.placeholder{margin-top:14px;border:1px dashed #aaa39a;border-radius:14px;padding:20px;text-align:center;color:var(--muted);font-size:12px}.note{background:#ece6dc;padding:14px 16px;border-radius:14px;font-size:13px;color:#5c564f;line-height:1.55}@media(max-width:760px){.grid{grid-template-columns:1fr}.nav{display:flex;overflow:auto}.nav button{min-width:max-content}}
+:root{--ink:#111;--muted:#777;--line:#e8e8e8;--soft:#f6f6f6}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#fff;color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}button,input{font:inherit}.gate{min-height:100dvh;max-width:430px;margin:0 auto;padding:22px 18px;display:flex;flex-direction:column}.gate-brand{font-size:13px;font-weight:800;letter-spacing:.12em}.gate-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:50px}.gate h1{font-size:34px;letter-spacing:-.05em;margin:0 0 10px}.gate p{font-size:14px;color:#777;margin:0 0 22px}.pin{width:100%;height:54px;border:1px solid #d8d8d8;padding:0 14px;font-size:22px;letter-spacing:.22em;text-align:center;border-radius:0;outline:none}.pin:focus{border-color:#111}.unlock{height:52px;border:0;background:#111;color:#fff;font-weight:700;margin-top:10px;border-radius:0}.error{height:20px;font-size:12px;color:#c33;margin-top:8px}.admin{display:none;min-height:100dvh}.admin.on{display:block}.wrap{max-width:980px;margin:auto;padding:22px 18px 40px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.brand{font-size:13px;font-weight:800;letter-spacing:.12em}.top a{font-size:12px;color:#777;text-decoration:none}.tabs{display:flex;gap:18px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:28px}.tabs button{border:0;background:none;padding:0 0 12px;font-size:13px;color:#888;white-space:nowrap}.tabs button.active{color:#111;border-bottom:1px solid #111}.title{font-size:30px;letter-spacing:-.045em;margin:0 0 6px}.sub{font-size:13px;color:#888;margin-bottom:24px}.row{border-top:1px solid var(--line);padding:17px 0}.row:first-child{border-top:0}.row strong{display:block;font-size:14px}.meta{font-size:12px;color:#888;margin-top:5px}.placeholder{margin-top:12px;height:80px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;letter-spacing:.06em}.status{display:inline-block;font-size:11px;color:#666;margin-top:8px}.logout{border:0;background:none;padding:0;color:#888;font-size:12px;cursor:pointer}
 </style>
 </head>
-<body><main><div class="top"><div class="brand">CAMERA TYPE / ADMIN</div><a class="back" href="../">서비스 보기 ↗</a></div><div class="grid"><aside class="nav"><button class="active">질문 관리</button><button>제품 관리</button><button>추천 조합</button><button>결과 타입</button><button>통계</button></aside><section class="panel"><h1 class="title">질문 관리</h1><div class="sub">현재는 미리보기 전용입니다. Supabase 연결 후 저장/업로드가 활성화됩니다.</div><div class="note">이미지 슬롯과 데이터 필드는 이미 분리되어 있습니다. 나중에 Storage URL만 넣으면 이미지형 문항으로 바로 전환됩니다.</div><div id="questionList"></div></section></div></main><script type="module">import{QUESTIONS}from'../data/questions.js';const el=document.querySelector('#questionList');el.innerHTML=QUESTIONS.map((q,i)=>`<div class="row"><strong>${String(i+1).padStart(2,'0')} · ${q.title}</strong><div class="meta">${q.type} · 선택지 ${q.options.length}개</div><span class="status">활성</span>${q.type==='image_choice'?'<div class="placeholder">IMAGE SLOT A / B · 업로드 기능은 Supabase 연결 후 활성화</div>':''}</div>`).join('');</script></body></html>
+<body>
+<section class="gate" id="gate">
+  <div class="gate-brand">CAMTYPE / ADMIN</div>
+  <div class="gate-body">
+    <h1>Admin</h1>
+    <p>PIN 번호를 입력하세요.</p>
+    <input class="pin" id="pin" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="관리자 PIN" />
+    <button class="unlock" id="unlock">접속</button>
+    <div class="error" id="error"></div>
+  </div>
+</section>
+
+<section class="admin" id="admin">
+  <main class="wrap">
+    <div class="top"><div class="brand">CAMTYPE / ADMIN</div><div><a href="../">서비스 보기</a>&nbsp;&nbsp;<button class="logout" id="logout">로그아웃</button></div></div>
+    <nav class="tabs"><button class="active">질문 관리</button><button>제품 관리</button><button>추천 조합</button><button>결과 타입</button><button>통계</button></nav>
+    <h1 class="title">질문 관리</h1>
+    <div class="sub">현재는 로컬 데이터 미리보기입니다. Supabase 연결 후 저장과 이미지 업로드를 활성화합니다.</div>
+    <div id="questionList"></div>
+  </main>
+</section>
+
+<script type="module">
+import{QUESTIONS}from'../data/questions.js';
+const ADMIN_PIN='529816';
+const gate=document.querySelector('#gate');
+const admin=document.querySelector('#admin');
+const pin=document.querySelector('#pin');
+const error=document.querySelector('#error');
+const key='camtype_admin_unlocked';
+
+function openAdmin(){sessionStorage.setItem(key,'1');gate.style.display='none';admin.classList.add('on');render();}
+function lockAdmin(){sessionStorage.removeItem(key);admin.classList.remove('on');gate.style.display='flex';pin.value='';error.textContent='';pin.focus();}
+function verify(){
+  if(pin.value===ADMIN_PIN){openAdmin();}
+  else{error.textContent='PIN 번호가 맞지 않습니다.';pin.value='';pin.focus();}
+}
+function render(){
+  const el=document.querySelector('#questionList');
+  el.innerHTML=QUESTIONS.map((q,i)=>`<div class="row"><strong>${String(i+1).padStart(2,'0')} · ${q.title}</strong><div class="meta">${q.type} · 선택지 ${q.options.length}개</div><div class="status">활성</div>${q.type==='image_choice'?'<div class="placeholder">IMAGE SLOT A / B</div>':''}</div>`).join('');
+}
+
+document.querySelector('#unlock').onclick=verify;
+pin.addEventListener('keydown',e=>{if(e.key==='Enter')verify();});
+document.querySelector('#logout').onclick=lockAdmin;
+if(sessionStorage.getItem(key)==='1')openAdmin();else pin.focus();
+</script>
+</body>
+</html>
