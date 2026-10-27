@@ -1,0 +1,50 @@
+export const CAMERAS = [
+  {
+    id:'fuji-xt50-27', brand:'FUJIFILM', body:'X-T50', lens:'XF 27mm F2.8 R WR', price:245,
+    image:null,
+    traits:{portable:9,mood:10,film:10,clean:6,technical:7,performance:7,simple:8,control:7,snapshot:9,planned:6,street:10,portrait:7,travel:8,family:6,af:6,photo:10,video:6,oneLens:9,swapLens:8},
+    tags:['가벼움','필름 색감','일상 스냅']
+  },
+  {
+    id:'fuji-x100vi', brand:'FUJIFILM', body:'X100VI', lens:'23mm F2 고정렌즈', price:280,
+    image:null,
+    traits:{portable:10,mood:10,film:10,clean:6,technical:7,performance:7,simple:10,control:6,snapshot:10,planned:5,street:10,portrait:6,travel:9,family:6,af:6,photo:10,video:5,oneLens:10,swapLens:0},
+    tags:['한 대로 끝','스냅','휴대성']
+  },
+  {
+    id:'sony-a7c2-40', brand:'SONY', body:'A7C II', lens:'FE 40mm F2.5 G', price:320,
+    image:null,
+    traits:{portable:8,mood:6,film:4,clean:10,technical:10,performance:10,simple:7,control:8,snapshot:8,planned:9,street:8,portrait:9,travel:9,family:10,af:10,photo:9,video:9,oneLens:8,swapLens:10},
+    tags:['풀프레임','AF','사진+영상']
+  },
+  {
+    id:'canon-r8-35', brand:'CANON', body:'EOS R8', lens:'RF 35mm F1.8 Macro IS STM', price:245,
+    image:null,
+    traits:{portable:8,mood:7,film:4,clean:9,technical:9,performance:9,simple:8,control:7,snapshot:8,planned:8,street:8,portrait:9,travel:8,family:9,af:9,photo:9,video:8,oneLens:8,swapLens:9},
+    tags:['가벼운 풀프레임','인물','균형']
+  },
+  {
+    id:'nikon-zf-40', brand:'NIKON', body:'Z f', lens:'NIKKOR Z 40mm F2 SE', price:295,
+    image:null,
+    traits:{portable:6,mood:9,film:8,clean:8,technical:9,performance:9,simple:6,control:10,snapshot:7,planned:9,street:8,portrait:9,travel:7,family:8,af:8,photo:10,video:7,oneLens:7,swapLens:10},
+    tags:['조작감','클래식','사진 중심']
+  },
+  {
+    id:'sony-a6700-1650', brand:'SONY', body:'A6700', lens:'E PZ 16-50mm F3.5-5.6 OSS II', price:205,
+    image:null,
+    traits:{portable:9,mood:5,film:3,clean:10,technical:10,performance:9,simple:8,control:8,snapshot:9,planned:8,street:8,portrait:8,travel:10,family:10,af:10,photo:8,video:10,oneLens:9,swapLens:9},
+    tags:['영상','AF','여행']
+  },
+  {
+    id:'canon-r50-18150', brand:'CANON', body:'EOS R50', lens:'RF-S 18-150mm F3.5-6.3 IS STM', price:145,
+    image:null,
+    traits:{portable:9,mood:6,film:3,clean:9,technical:8,performance:7,simple:10,control:5,snapshot:9,planned:7,street:7,portrait:7,travel:10,family:9,af:9,photo:8,video:8,oneLens:10,swapLens:7},
+    tags:['입문','가성비','여행']
+  },
+  {
+    id:'fuji-xs20-1855', brand:'FUJIFILM', body:'X-S20', lens:'XF 18-55mm F2.8-4 R LM OIS', price:210,
+    image:null,
+    traits:{portable:8,mood:9,film:9,clean:7,technical:8,performance:8,simple:8,control:7,snapshot:8,planned:8,street:8,portrait:8,travel:9,family:8,af:7,photo:9,video:9,oneLens:9,swapLens:9},
+    tags:['필름 색감','사진+영상','여행']
+  }
+];
