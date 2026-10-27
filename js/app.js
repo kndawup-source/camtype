@@ -41,10 +41,7 @@ function renderQuestion(){
   const q=QUESTIONS[state.step];
   app.innerHTML=`
     <section class="screen quiz-screen">
-      <div class="quiz-top">
-        ${progressMarkup()}
-        <button class="close-btn" id="closeBtn" aria-label="테스트 종료">×</button>
-      </div>
+      <div class="quiz-top">${progressMarkup()}</div>
       <div class="question-area">
         <h2 class="question-title">${q.title}</h2>
         ${q.kicker?`<p class="question-note">${q.kicker}</p>`:''}
@@ -61,7 +58,6 @@ function renderQuestion(){
 
   document.querySelector('#nextBtn').onclick=commitAndNext;
   document.querySelector('#prevBtn').onclick=goBack;
-  document.querySelector('#closeBtn').onclick=start;
 }
 
 function renderOptions(q){
@@ -165,7 +161,7 @@ function renderResult(){
   app.innerHTML=`
     <section class="result-screen">
       <div class="result-hero">
-        <div class="result-top"><div class="result-kicker">YOUR CAMTYPE</div><button class="close-btn" id="closeBtn" aria-label="처음으로">×</button></div>
+        <div class="result-top"><div class="result-kicker">YOUR CAMTYPE</div></div>
         <div class="result-main">
           <h1 class="result-title">${type.name}</h1>
           <p class="result-line">${type.line}</p>
@@ -193,7 +189,6 @@ function renderResult(){
 
   document.querySelector('#detailBtn').onclick=()=>document.querySelector('#details').scrollIntoView({behavior:'smooth'});
   document.querySelector('#retryBtn').onclick=start;
-  document.querySelector('#closeBtn').onclick=start;
   document.querySelector('#copyBtn').onclick=async()=>{
     const text=`나는 ${type.name}\n추천 조합: ${best.brand} ${best.body} + ${best.lens}`;
     try{await navigator.clipboard.writeText(text);document.querySelector('#copyBtn').textContent='복사됨';}catch{alert(text);}
