@@ -14,7 +14,7 @@ function progressMarkup(){
 function start(){
   state.step=-1; state.answers={}; state.draft=null;
   app.innerHTML=`<section class="screen start-screen">
-    <div class="start-head"><div class="brand">CAMTYPE</div><a class="admin-link" href="./admin/">ADMIN</a></div>
+    <div class="start-head"><div class="brand">CAMTYPE</div></div>
     <div class="start-content"><h1>나한테 맞는<br>카메라는 뭘까?</h1><p>복잡한 스펙 대신 취향과 사용 방식으로<br>나에게 맞는 카메라 조합을 찾아보세요.</p><div class="start-meta">10 questions · about 1 min</div></div>
     <div class="start-footer"><button class="primary" id="startBtn">시작하기</button></div>
   </section>`;
@@ -74,19 +74,19 @@ function goBack(){if(state.step===0)return;state.step--;prepareDraft();renderQue
 
 function productCard(item,label){
   if(!item)return '';
-  return `<div class="recommend-card"><div class="recommend-label">${label}</div><div class="recommend-name">${esc(item.brand)} ${esc(item.body)}</div><div class="recommend-lens">${esc(item.lens)}</div><div class="recommend-meta"><span>${Number(item.price).toLocaleString()}만원</span><span>${item.match}% MATCH</span></div></div>`;
+  return `<div class="recommend-card"><div class="recommend-label">${label}</div><div class="recommend-name">${esc(item.brand)} ${esc(item.body)}</div><div class="recommend-lens">${esc(item.lens)}</div><div class="recommend-meta"><span>${Number(item.price).toLocaleString()}만원</span></div></div>`;
 }
 
 function renderResult(){
   const {profile,constraints}=buildProfile(state.answers,QUESTIONS);
   const set=getRecommendationSet(profile,constraints,CAMERAS),type=getType(profile,TYPES),best=set.best;
-  if(!best){app.innerHTML='<section class="screen"><p>추천 가능한 제품이 없습니다.</p></section>';return;}
+  if(!best){app.innerHTML=`<section class="screen start-screen"><div class="start-head"><div class="brand">CAMTYPE</div></div><div class="start-content"><h1>예산 안에서<br>추천 조합을 찾지 못했어요.</h1><p>조건을 임의로 무시하지 않았습니다.<br>예산을 조정해 다시 확인해보세요.</p></div><div class="start-footer"><button class="primary" id="retryBtn">다시 하기</button></div></section>`;document.querySelector('#retryBtn').onclick=start;return;}
   const reasons=getReasons(profile,best);trackResult(type.id,best.id,state.answers);
   app.innerHTML=`<section class="result-screen"><div class="result-hero">
     <div class="result-top"><div class="result-kicker">YOUR CAMTYPE</div></div>
     <div class="result-main"><h1 class="result-title">${esc(type.name)}</h1><p class="result-line">${esc(type.line)}</p></div>
     <div class="product-slot">${best.image?`<img src="${esc(best.image)}" alt="${esc(best.brand)} ${esc(best.body)}">`:'PRODUCT IMAGE'}</div>
-    <div class="best-block"><div class="best-label">BEST MATCH</div><div class="best-name">${esc(best.brand)} ${esc(best.body)}</div><div class="best-lens">${esc(best.lens)}</div><div class="best-meta"><span>${best.price}만원</span><span>${best.match}% MATCH</span></div></div>
+    <div class="best-block"><div class="best-label">BEST MATCH</div><div class="best-name">${esc(best.brand)} ${esc(best.body)}</div><div class="best-lens">${esc(best.lens)}</div><div class="best-meta"><span>${best.price}만원</span></div></div>
     <div class="result-bottom"><button class="secondary" id="detailBtn">결과 자세히 보기</button></div>
   </div>
   <section class="detail" id="details"><h3>왜 이 조합인가요?</h3><div class="reason-list">${reasons.map(r=>`<div class="reason"><b>${esc(r.label)}</b><span>${esc(r.text)}</span></div>`).join('')}</div></section>
