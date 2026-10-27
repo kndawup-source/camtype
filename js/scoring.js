@@ -20,8 +20,10 @@ export function buildProfile(answers,questions=[]){
     if(q.active===false||q.type==='number_wheel')continue;
     const imp=clamp(safeNum(q.importance,DEFAULT_IMPORTANCE),0,3);
     const perQ={};
-    for(const opt of q.options||[]){
-      const raw=opt.weights||opt.scores||{},positive=Object.entries(raw).filter(([,v])=>safeNum(v)>0),total=positive.reduce((sum,[,v])=>sum+safeNum(v),0);
+    const sources=[...(q.options||[]).map(o=>o.weights||o.scores||{})];
+    if(q.type==='ratio_slider'||q.type==='tap_scale')sources.push(q.leftWeights||{},q.rightWeights||{});
+    for(const raw of sources){
+      const positive=Object.entries(raw||{}).filter(([,v])=>safeNum(v)>0),total=positive.reduce((sum,[,v])=>sum+safeNum(v),0);
       if(!total)continue;
       for(const [key,val] of positive){const n=(safeNum(val)/total)*imp;perQ[key]=Math.max(perQ[key]||0,n);}
     }

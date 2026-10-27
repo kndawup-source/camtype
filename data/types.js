@@ -6,5 +6,6 @@ export const TYPES = [
   {id:'hybrid',name:'THE HYBRID CREATOR',line:'사진도 영상도 포기하지 않고 한 대로 모두 하고 싶은 사람.',weights:{video:1.35,af:.75,performance:.75}},
   {id:'traveler',name:'THE LIGHT TRAVELER',line:'좋은 카메라는 결국 자주 들고 나가는 카메라라고 생각하는 사람.',weights:{travel:1.25,portable:1.25,simple:.75}},
   {id:'people',name:'THE PEOPLE STORYTELLER',line:'풍경보다 사람의 표정과 움직임에서 이야기를 찾는 사람.',weights:{af:.55,snapshot:.25},anyOf:[{keys:['portrait','family'],weight:1.15}]},
-  {id:'minimalist',name:'THE ONE-LENS MINIMALIST',line:'장비를 늘리기보다 한 조합을 오래 익혀 빠르게 찍는 사람.',weights:{oneLens:1.35,simple:1.15,snapshot:.65}}
+  {id:'minimalist',name:'THE ONE-LENS MINIMALIST',line:'장비를 늘리기보다 한 조합을 오래 익혀 빠르게 찍는 사람.',weights:{oneLens:1.35,simple:1.15,snapshot:.65}},
+  {id:'phone-first',name:'PHONE FIRST',line:'카메라를 추천하려고 했는데, 조건을 다 맞춰보니 아이폰이 이겼습니다.',weights:{},special:'fallback',active:false}
 ];
