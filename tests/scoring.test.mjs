@@ -7,10 +7,12 @@ import { buildProfile,getRecommendationSet,getType,validateCatalog } from '../js
 assert.deepEqual(validateCatalog(CAMERAS),[],'catalog must be valid');
 assert.ok(CAMERAS.length>=25,'release catalog should have at least 25 combinations');
 assert.ok(new Set(CAMERAS.map(c=>c.brand)).size>=6,'release catalog should cover at least 6 brands');
-assert.ok(QUESTIONS.some(q=>q.type==='ratio_slider'),'ratio slider required');
+assert.ok(QUESTIONS.some(q=>q.id==='photo_video'&&q.type==='choice'),'photo/video single choice required');
 assert.ok(QUESTIONS.some(q=>q.type==='multi_choice'),'multi choice required');
 assert.ok(QUESTIONS.some(q=>q.type==='tap_scale'),'tap scale required');
 assert.ok(TYPES.some(t=>t.id==='phone-first'),'PHONE FIRST fallback type required');
+for(const q of QUESTIONS){for(const o of q.options||[])assert.ok(/[가-힣]/.test(o.label),`answer label must be Korean: ${q.id}/${o.id}/${o.label}`);}
+assert.ok(!QUESTIONS.some(q=>q.id==='carry_weight'),'numeric weight question must be removed');
 
 let seed=20261027;
 const rnd=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
@@ -33,13 +35,13 @@ for(let i=0;i<30000;i++){
   assert.ok(type?.id,'type must resolve');typeCounts[type.id]=(typeCounts[type.id]||0)+1;
   if(!result.best){noEligible++;continue;}
   if(constraints.budget!=null)assert.ok(result.best.price<=constraints.budget,`over budget: ${result.best.id}`);
-  if(constraints.maxWeight!=null)assert.ok(result.best.weight<=constraints.maxWeight,`over weight: ${result.best.id}`);
   if(constraints.interchangeable===true)assert.equal(result.best.interchangeable,true,`fixed lens recommended for swap: ${result.best.id}`);
   const again=getRecommendationSet(profile,constraints,CAMERAS);assert.equal(result.best.id,again.best.id,'deterministic result required');
   productCounts[result.best.id]=(productCounts[result.best.id]||0)+1;checked++;
 }
 assert.ok(checked>10000,'must exercise many valid combinations');
-assert.ok(noEligible>0,'must exercise PHONE FIRST/no eligible path');
+const forcedNoEligible=getRecommendationSet({}, {budget:1}, CAMERAS);
+assert.equal(forcedNoEligible.best,null,'PHONE FIRST/no eligible path must resolve when hard constraints exclude all products');
 const totalTypes=Object.values(typeCounts).reduce((a,b)=>a+b,0),shares=Object.fromEntries(Object.entries(typeCounts).map(([k,v])=>[k,+(v/totalTypes*100).toFixed(1)]));
 assert.ok(Math.max(...Object.values(shares))<45,`type distribution too concentrated: ${JSON.stringify(shares)}`);
 const recommendedProducts=Object.keys(productCounts).length;assert.ok(recommendedProducts>=12,`catalog diversity too low: only ${recommendedProducts} products became best match`);

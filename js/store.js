@@ -1,7 +1,7 @@
 import { QUESTIONS } from '../data/questions.js';
 import { CAMERAS } from '../data/cameras.js';
 import { TYPES } from '../data/types.js';
-const KEYS={questions:'camtype_questions_v5',cameras:'camtype_cameras_v5',types:'camtype_types_v5',stats:'camtype_stats_v5'};
+const KEYS={questions:'camtype_questions_v6',cameras:'camtype_cameras_v6',types:'camtype_types_v6',stats:'camtype_stats_v6'};
 const clone=v=>JSON.parse(JSON.stringify(v));
 function read(key,fallback){try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):clone(fallback);}catch{return clone(fallback);}}
 function write(key,value){localStorage.setItem(key,JSON.stringify(value));return value;}

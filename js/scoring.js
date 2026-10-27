@@ -4,7 +4,7 @@ const safeNum=(v,f=0)=>{const n=Number(v);return Number.isFinite(n)?n:f};
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 
 export function buildProfile(answers,questions=[]){
-  const profile={},constraints={budget:null,maxWeight:null,interchangeable:null},contributions={};
+  const profile={},constraints={budget:null,interchangeable:null},contributions={};
   for(const q of questions){
     if(q.active===false) continue;
     const ans=answers[q.id]; if(!ans) continue;
@@ -37,7 +37,6 @@ export function normalizeProfile(profile){const sum=Object.values(profile).reduc
 function passesConstraints(camera,constraints){
   if(camera.active===false||camera.available===false||camera.status==='discontinued')return false;
   const budget=safeNum(constraints?.budget,null); if(budget!==null&&safeNum(camera.price,Infinity)>budget)return false;
-  const maxWeight=safeNum(constraints?.maxWeight,null); if(maxWeight!==null&&safeNum(camera.weight,Infinity)>maxWeight)return false;
   if(constraints?.interchangeable===true&&camera.interchangeable!==true)return false;
   if(constraints?.interchangeable===false&&camera.interchangeable===true)return false;
   return true;
